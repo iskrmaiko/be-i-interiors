@@ -1,0 +1,16 @@
+{
+	"name": "LAMP",
+	"dockerComposeFile": [
+		"./docker-compose.yml",
+	],
+	"service": "php",
+	"workspaceFolder": "/var/www/html",
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"remoteUser": "vscode",
+	"extensions": [
+		"felixfbecker.php-debug",
+		"felixfbecker.php-intellisense"
+	]
+}

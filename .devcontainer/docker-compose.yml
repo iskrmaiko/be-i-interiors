@@ -1,0 +1,47 @@
+version: "3"
+services:
+  php:
+    build: ./php
+    ports:
+      - "80:80"
+      - "8080:8080"
+    tty: true
+    stdin_open: true
+    volumes:
+      - ../html:/var/www/html
+      - ./apache2/apache2.conf:/etc/apache2/conf-enabled/apache2.conf
+      - ./apache2/hosts.conf:/etc/apache2/sites-enabled/hosts.conf
+    links:
+      # MySQL のホスト名 DB_HOST mysql:対象のドメイン
+      - mysql:mysql38.onamae.ne.jp
+  mysql:
+    build: ./mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # WordPress のためのデータベース名 DB_NAME
+      MYSQL_DATABASE: 
+      # MySQL データベースのユーザー名 DB_USER
+      MYSQL_USER: 
+      # MySQL データベースのパスワード DB_PASSWORD
+      MYSQL_PASSWORD: 
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    cap_add:
+      - SYS_NICE
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=
+      - PMA_PASSWORD=
+    links:
+      - mysql
+    ports:
+      - 8070:80
+    volumes:
+      - /sessions
+
+      
